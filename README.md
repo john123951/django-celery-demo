@@ -1,21 +1,28 @@
+### 项目依赖
+- celery: 分布式任务作业
+  - celery[redis]: 使用redis作为broker
+- django: Web Framework
+  - django-celery: celery web管理
+  - django-cache-extension: 缓存服务（使用redis）
+  - dj-static: 生产环境self静态文件
+- redis: key-value存储
 
 ### 安装依赖
-sudo pip install django django-celery
-sudo pip install "celery[redis]"
 pip install -r requirements.txt
 
-
 ### 配置
-./manage.py migrate
-./manage.py createsuperuser
-
+./manage.py migrate          # 同步数据库
+./manage.py createsuperuser  # 创建管理员
+./manage.py collectstatic    # 收集静态文件
 
 ### 运行
-./manage.py runserver 0.0.0.0:8000
-./manage.py celery beat --loglevel=INFO    # 添加新任务后需重启beat
-./manage.py celery worker --loglevel=INFO  
+./manage.py runserver 0.0.0.0:8000         # 管理后台
+./manage.py celery beat --loglevel=INFO    # 触发作业
+./manage.py celery worker --loglevel=INFO  # 执行作业（添加新代码时需重启）
 
-
-### 监控
+### 监控 [Optional]
 pip install flower
 celery flower --broker=redis://localhost:6379/0
+
+### 其他
+监听模块变化: worker 使用autoreload启动，自动加载新添加的代码（实验性功能）[官方文档](http://docs.celeryproject.org/en/3.1/userguide/workers.html#autoreloading)
