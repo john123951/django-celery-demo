@@ -21,5 +21,6 @@ djcelery-test-db
 .idea/
 
 db.sqlite3
+celerybeat.pid
 celerybeat-schedule
 /static
