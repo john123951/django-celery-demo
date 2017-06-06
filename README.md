@@ -2,8 +2,8 @@
 任务调度，通过后台动态配置cron风格的执行任务。
 
 ### 项目依赖
-- sqlite3: 本地数据存储
 - redis: key-value存储
+- sqlite3: 本地数据存储
 - celery: 分布式任务作业
   - celery[redis]: 使用redis作为broker
 - django: Web Framework
@@ -22,6 +22,9 @@ pip install -r requirements.txt
 ./manage.py collectstatic    # 收集静态文件
 ```
 
+### 修改redis地址
+修改./scheduler/settings.py文件中BROKER_URL、CELERY_RESULT_BACKEND选项
+
 ### 运行
 ```shell
 ./manage.py runserver 0.0.0.0:8000         # 管理后台
@@ -32,7 +35,7 @@ pip install -r requirements.txt
 ### 监控 [Optional]
 ```shell
 pip install flower
-celery flower --broker=redis://localhost:6379/0 --broker_api=redis://localhost:6379/0
+celery flower --address 0.0.0.0 --broker=redis://localhost:6379/0 --broker_api=redis://localhost:6379/0
 ```
 
 ### 其他
