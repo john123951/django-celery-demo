@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -23,7 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'tn%*bt&f3#2d60+!&(or247877=w3j81!^k5e1&5$(5sh(jk0%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
+# DEBUG = True
+# TEMPLATE_DEBUG = DEBUG
 
 # A list of strings representing the host/domain names that this Django site can serve.
 # https://docs.djangoproject.com/en/1.8/ref/settings/#allowed-hosts
@@ -31,31 +31,32 @@ ALLOWED_HOSTS = [
     '*',
 ]
 
-
 # Celery settings
+# http://docs.celeryproject.org/en/3.1/configuration.html
 
 BROKER_URL = 'redis://localhost:6379/0'
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'  ###
 
-#: Only add pickle to this list if your broker is secured
-#: from unwanted access (see userguide/security.html)
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+# CELERY_TASK_RESULT_EXPIRES = 10
 CELERY_RESULT_SERIALIZER = 'json'
-#CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
-CELERY_RESULT_BACKEND='djcelery.backends.cache:CacheBackend'
+CELERY_RESULT_BACKEND = 'redis'
+# CELERY_RESULT_BACKEND = 'djcelery.backends.cache:CacheBackend'  # django-celery cached database result backend
+# CELERY_RESULT_BACKEND = "djcelery.backends.database:DatabaseBackend"  # django-celery database result backend
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+# CELERY_SEND_EVENTS = True
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'django.contrib.admin',  # https://docs.djangoproject.com/en/1.11/ref/contrib/admin/
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'djcelery',    # 
-    'apps',        # 
+    'djcelery',  #
+    'apps',  #
 ]
 
 MIDDLEWARE = [
@@ -88,7 +89,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'scheduler.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
@@ -99,21 +99,22 @@ DATABASES = {
     }
 }
 
-
-CACHES={
-      "default": {
-          'BACKEND': 'cache_extension.backends.redis.ExtensionRedisBackend',
-          'LOCATION': 'redis://localhost:6379/0',
-          'TIMEOUT': '172800',
-          "KEY_PREFIX": "cache_extension",
-          'OPTIONS': {
-              "DB": 0,
-              "CLIENT_CLASS": "django_redis.client.DefaultClient",
-              'PARSER_CLASS': 'redis.connection.HiredisParser',
-              'PICKLE_VERSION': 2,
-          }
-      }
-}
+# 安装依赖 django-cache-extension
+# 并配置 CELERY_RESULT_BACKEND = 'djcelery.backends.cache:CacheBackend'
+# CACHES = {
+#     "default": {
+#         'BACKEND': 'cache_extension.backends.redis.ExtensionRedisBackend',
+#         'LOCATION': 'redis://localhost:6379/0',
+#         'TIMEOUT': '172800',
+#         "KEY_PREFIX": "cache_extension",
+#         'OPTIONS': {
+#             "DB": 0,
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#             'PARSER_CLASS': 'redis.connection.HiredisParser',
+#             'PICKLE_VERSION': 2,
+#         }
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -145,7 +146,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/

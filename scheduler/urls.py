@@ -18,8 +18,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    
-    #'/',
+
+    # '',
     # Examples:
     # url(r'^$', 'proj.views.home', name='home'),
     # url(r'^proj/', include('proj.foo.urls')),
