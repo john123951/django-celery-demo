@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """
 Django settings for scheduler project.
 
@@ -40,7 +41,7 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 # CELERY_TASK_RESULT_EXPIRES = 10
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_RESULT_BACKEND = 'redis'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 # CELERY_RESULT_BACKEND = 'djcelery.backends.cache:CacheBackend'  # django-celery cached database result backend
 # CELERY_RESULT_BACKEND = "djcelery.backends.database:DatabaseBackend"  # django-celery database result backend
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
@@ -99,8 +100,8 @@ DATABASES = {
     }
 }
 
+# 如果使用 CELERY_RESULT_BACKEND = 'djcelery.backends.cache:CacheBackend'
 # 安装依赖 django-cache-extension
-# 并配置 CELERY_RESULT_BACKEND = 'djcelery.backends.cache:CacheBackend'
 # CACHES = {
 #     "default": {
 #         'BACKEND': 'cache_extension.backends.redis.ExtensionRedisBackend',

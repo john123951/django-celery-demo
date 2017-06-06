@@ -1,3 +1,4 @@
+redis
 celery==3.1.24
 celery[redis]
 django>=1.9.8
